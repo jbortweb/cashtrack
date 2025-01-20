@@ -1,0 +1,32 @@
+{
+  "name": "backend_cashtrakr",
+  "version": "1.0.0",
+  "description": "Proyecto React Typescript Node.js",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.ts",
+    "dev:api": "nodemon src/index.ts --api",
+    "build": "tsc",
+    "start": "node ./dist/index.js"
+  },
+  "author": "jbprtweb",
+  "license": "ISC",
+  "dependencies": {
+    "@types/morgan": "^1.9.9",
+    "colors": "^1.4.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "morgan": "^1.10.0",
+    "pg": "^8.13.1",
+    "pg-hstore": "^2.3.4",
+    "reflect-metadata": "^0.2.2",
+    "sequelize": "^6.37.5",
+    "sequelize-typescript": "^2.1.6"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
+}
