@@ -7,12 +7,12 @@ class Budget extends Model {
   @Column({
     type: DataType.STRING(100),
   })
-  name: string
+  declare name: string
 
   @Column({
     type: DataType.DECIMAL,
   })
-  cantidad: number
+  declare cantidad: number
 }
 
 export default Budget
