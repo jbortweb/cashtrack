@@ -1,53 +1,34 @@
 import { Router } from 'express'
 import { BudgetController } from '../controllers/BudgetController'
-import { body } from 'express-validator'
 import { handleInputErrors } from '../middleware/validation'
-import { validateBudgetById, validateBudgetExists } from '../middleware/budget'
+import {
+  validateBudgetInput,
+  validateBudgetById,
+  validateBudgetExists,
+} from '../middleware/budget'
 
 const router = Router()
+
+router.param('budgetId', validateBudgetById)
+router.param('budgetId', validateBudgetExists)
 
 router.get('/', BudgetController.getAll)
 
 router.post(
   '/',
-  body('name').notEmpty().withMessage('El nombre es requerido'),
-  body('cantidad')
-    .notEmpty()
-    .withMessage('La cantidad es requerida')
-    .isNumeric()
-    .withMessage('La cantidad debe ser un número')
-    .custom((value) => value > 0)
-    .withMessage('La cantidad debe ser mayor a 0'),
+  validateBudgetInput,
   handleInputErrors,
   BudgetController.create
 )
-router.get(
-  '/:id',
-  validateBudgetById,
-  validateBudgetExists,
-  BudgetController.getById
-)
+router.get('/:budgetId', BudgetController.getById)
 
 router.put(
-  '/:id',
-  validateBudgetById,
-  validateBudgetExists,
-  body('name').notEmpty().withMessage('El nombre es requerido'),
-  body('cantidad')
-    .notEmpty()
-    .withMessage('La cantidad es requerida')
-    .isNumeric()
-    .withMessage('La cantidad debe ser un número')
-    .custom((value) => value > 0)
-    .withMessage('La cantidad debe ser mayor a 0'),
+  '/:budgetId',
+  validateBudgetInput,
+  handleInputErrors,
   BudgetController.update
 )
 
-router.delete(
-  '/:id',
-  validateBudgetById,
-  validateBudgetExists,
-  BudgetController.delete
-)
+router.delete('/:budgetId', BudgetController.delete)
 
 export default router
