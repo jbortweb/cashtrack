@@ -1,11 +1,13 @@
 import { Router } from 'express'
 import { BudgetController } from '../controllers/BudgetController'
-import { body, param } from 'express-validator'
+import { body } from 'express-validator'
 import { handleInputErrors } from '../middleware/validation'
+import { validateBudgetById, validateBudgetExists } from '../middleware/budget'
 
 const router = Router()
 
 router.get('/', BudgetController.getAll)
+
 router.post(
   '/',
   body('name').notEmpty().withMessage('El nombre es requerido'),
@@ -21,16 +23,15 @@ router.post(
 )
 router.get(
   '/:id',
-  param('id')
-    .isInt()
-    .withMessage('El id debe ser un número')
-    .custom((value) => value > 0)
-    .withMessage('El id debe ser mayor a 0'),
-  handleInputErrors,
+  validateBudgetById,
+  validateBudgetExists,
   BudgetController.getById
 )
+
 router.put(
   '/:id',
+  validateBudgetById,
+  validateBudgetExists,
   body('name').notEmpty().withMessage('El nombre es requerido'),
   body('cantidad')
     .notEmpty()
@@ -39,22 +40,13 @@ router.put(
     .withMessage('La cantidad debe ser un número')
     .custom((value) => value > 0)
     .withMessage('La cantidad debe ser mayor a 0'),
-  param('id')
-    .isInt()
-    .withMessage('El id debe ser un número')
-    .custom((value) => value > 0)
-    .withMessage('El id debe ser mayor a 0'),
-  handleInputErrors,
   BudgetController.update
 )
+
 router.delete(
   '/:id',
-  param('id')
-    .isInt()
-    .withMessage('El id debe ser un número')
-    .custom((value) => value > 0)
-    .withMessage('El id debe ser mayor a 0'),
-  handleInputErrors,
+  validateBudgetById,
+  validateBudgetExists,
   BudgetController.delete
 )
 
