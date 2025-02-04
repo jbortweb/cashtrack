@@ -49,7 +49,12 @@ router.post(
   ExpenseController.create
 )
 router.get('/:budgetId/expenses/:expenseId', ExpenseController.getById)
-router.put('/:budgetId/expenses/:expenseId', ExpenseController.updateById)
+router.put(
+  '/:budgetId/expenses/:expenseId',
+  validateExtenseInput,
+  handleInputErrors,
+  ExpenseController.updateById
+)
 router.delete('/:budgetId/expenses/:expenseId', ExpenseController.deleteById)
 
 export default router
