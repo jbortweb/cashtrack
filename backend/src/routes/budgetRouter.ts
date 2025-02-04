@@ -18,6 +18,9 @@ const router = Router()
 router.param('budgetId', validateBudgetById)
 router.param('budgetId', validateBudgetExists)
 
+router.param('expenseId', validateExpensetById)
+router.param('expenseId', validateExpenseExists)
+
 router.get('/', BudgetController.getAll)
 
 router.post(
@@ -45,12 +48,7 @@ router.post(
   handleInputErrors,
   ExpenseController.create
 )
-router.get(
-  '/:budgetId/expenses/:expenseId',
-  validateExpensetById,
-  validateExpenseExists,
-  ExpenseController.getById
-)
+router.get('/:budgetId/expenses/:expenseId', ExpenseController.getById)
 router.put('/:budgetId/expenses/:expenseId', ExpenseController.updateById)
 router.delete('/:budgetId/expenses/:expenseId', ExpenseController.deleteById)
 
