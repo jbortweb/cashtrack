@@ -1,8 +1,9 @@
 import { Request, Response } from 'express'
 import User from '../models/User'
-import { hashPassword } from '../utils/auth'
+import { checkPassword, hashPassword } from '../utils/auth'
 import { generateToken } from '../utils/token'
 import { AuthEmail } from '../emails/AuthEmail'
+import { generateJWT } from '../utils/jwt'
 
 export class AuthController {
   /* CREAR CUENTA */
@@ -49,5 +50,37 @@ export class AuthController {
     } catch (error) {
       res.status(500).json({ error: 'Hubo un error al confirmar la cuenta' })
     }
+  }
+
+  //LOGIN
+  static login = async (req: Request, res: Response) => {
+    const { email, password } = req.body
+
+    //Revisar si el usuario existe
+    const user = await User.findOne({ where: { email } })
+    if (!user) {
+      res.status(404).json({ error: 'Usuario  no encontrado' })
+      return
+    }
+    //Revisar si el usaurio está confirmado
+    if (!user.confirmed) {
+      res.status(403).json({ error: 'Usuario no confirmado, revisa tu correo' })
+      return
+    }
+
+    //Revisar password
+
+    const isPasswordCorrect = await checkPassword(password, user.password)
+    if (!isPasswordCorrect) {
+      const error = new Error('Contraseña incorrecta')
+      res.status(401).json({ error: error.message })
+      return
+    }
+
+    //Generar token
+
+    const token = generateJWT(user.id)
+
+    res.json(token)
   }
 }
