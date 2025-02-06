@@ -20,4 +20,18 @@ export class AuthEmail {
     })
     console.log('Mensaje enviado', email.messageId)
   }
+
+  static resetPasswordEmail = async (user: EmailType) => {
+    const email = await transport.sendMail({
+      from: 'CashTrackr <admin@cashtrackr.com>',
+      to: user.email,
+      subject: 'Recupera tu contraseña',
+      html: `
+        <h1>Hola ${user.name}</h1>
+        <p>Haz click en el siguiente enlace para recuperar tu contraseña:</p>
+        <a href="#"><b>${user.token}</b></a>
+      `,
+    })
+    console.log('Mensaje enviado', email.messageId)
+  }
 }

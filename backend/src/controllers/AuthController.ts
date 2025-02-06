@@ -83,4 +83,59 @@ export class AuthController {
 
     res.json(token)
   }
+
+  //RECUPERAR CONTRASEÑA
+
+  static forgotPassword = async (req: Request, res: Response) => {
+    const { email } = req.body
+
+    const user = await User.findOne({ where: { email } })
+    if (!user) {
+      res.status(404).json({ error: 'Usuario  no encontrado' })
+      return
+    }
+    const token = generateToken()
+    user.token = token
+    await user.save()
+
+    await AuthEmail.resetPasswordEmail({
+      name: user.name,
+      email: user.email,
+      token: user.token,
+    })
+    res.json('Revisa tu correo')
+  }
+
+  static validateToken = async (req: Request, res: Response) => {
+    const { token } = req.body
+
+    const tokenExists = await User.findOne({ where: { token } })
+    if (!tokenExists) {
+      const error = new Error('Token inválido')
+      res.status(404).json({ error: error.message })
+      return
+    }
+    res.json('Token válido')
+  }
+
+  //ACTUALIZAR CONTRASEÑA
+
+  static resetPasswordToken = async (req: Request, res: Response) => {
+    const { token } = req.params
+    const { password } = req.body
+
+    const user = await User.findOne({ where: { token } })
+    if (!user) {
+      const error = new Error('Token inválido')
+      res.status(404).json({ error: error.message })
+      return
+    }
+    //asignar nuevo password
+    user.password = await hashPassword(password)
+    user.token = null
+
+    await user.save()
+
+    res.json('El password se ha actualizado correctamente')
+  }
 }
