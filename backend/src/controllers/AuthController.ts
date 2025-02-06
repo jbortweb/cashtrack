@@ -5,6 +5,7 @@ import { generateToken } from '../utils/token'
 import { AuthEmail } from '../emails/AuthEmail'
 
 export class AuthController {
+  /* CREAR CUENTA */
   static createAccount = async (req: Request, res: Response) => {
     const { email, password } = req.body
     const userExists = await User.findOne({ where: { email } })
@@ -26,6 +27,27 @@ export class AuthController {
       res.json('Cuenta creada correctamente')
     } catch (error) {
       res.status(500).json({ error: 'Hubo un error al crear la cuenta' })
+    }
+  }
+
+  /* CONFIRMAR CUENTA */
+  static confirmeAccount = async (req: Request, res: Response) => {
+    const { token } = req.body
+
+    const tokenExists = await User.findOne({ where: { token } })
+    if (!tokenExists) {
+      const error = new Error('Token inválido')
+      res.status(401).json({ error: error.message })
+      return
+    }
+
+    try {
+      tokenExists.confirmed = true
+      tokenExists.token = ''
+      await tokenExists.save()
+      res.json('Cuenta confirmada correctamente')
+    } catch (error) {
+      res.status(500).json({ error: 'Hubo un error al confirmar la cuenta' })
     }
   }
 }
