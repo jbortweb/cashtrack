@@ -1,8 +1,9 @@
 import { Router } from 'express'
 import { AuthController } from '../controllers/AuthController'
-import { body, param } from 'express-validator'
+import { body, header, param } from 'express-validator'
 import { handleInputErrors } from '../middleware/validation'
 import { limiter } from '../config/limiter'
+import { authenticate } from '../middleware/auth'
 
 const router = Router()
 
@@ -68,6 +69,21 @@ router.post(
     .withMessage('La contraseña debe tener al menos 8 caracteres'),
   handleInputErrors,
   AuthController.resetPasswordToken
+)
+
+router.get('/user', authenticate, AuthController.user)
+
+router.post(
+  '/update-password',
+  authenticate,
+  body('current-password')
+    .notEmpty()
+    .withMessage('La contraseña es obligatoria'),
+  body('password')
+    .isLength({ min: 8 })
+    .withMessage('La contraseña debe tener al menos 8 caracteres'),
+  handleInputErrors,
+  AuthController.updatePassword
 )
 
 export default router

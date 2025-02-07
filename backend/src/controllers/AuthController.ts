@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import jwt from 'jsonwebtoken'
 import User from '../models/User'
 import { checkPassword, hashPassword } from '../utils/auth'
 import { generateToken } from '../utils/token'
@@ -137,5 +138,12 @@ export class AuthController {
     await user.save()
 
     res.json('El password se ha actualizado correctamente')
+  }
+
+  static user = async (req: Request, res: Response) => {
+    res.json(req.user)
+  }
+  static updatePassword = async (req: Request, res: Response) => {
+    res.json('Desde usupdatePassword')
   }
 }
