@@ -76,7 +76,7 @@ router.get('/user', authenticate, AuthController.user)
 router.post(
   '/update-password',
   authenticate,
-  body('current-password')
+  body('current_password')
     .notEmpty()
     .withMessage('La contraseña es obligatoria'),
   body('password')
