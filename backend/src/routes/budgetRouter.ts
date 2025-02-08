@@ -12,8 +12,11 @@ import {
   validateExpensetById,
   validateExtenseInput,
 } from '../middleware/expense'
+import { authenticate } from '../middleware/auth'
 
 const router = Router()
+
+router.use(authenticate)
 
 router.param('budgetId', validateBudgetById)
 router.param('budgetId', validateBudgetExists)
