@@ -146,7 +146,6 @@ export class AuthController {
 
   static updatePassword = async (req: Request, res: Response) => {
     const { current_password, password } = req.body
-    console.log(password, current_password)
     const { id } = req.user
     const user = await User.findByPk(id)
     const isPasswordCorrect = await checkPassword(
@@ -162,5 +161,17 @@ export class AuthController {
     user.password = await hashPassword(password)
     await user.save()
     res.json('La contraseña se ha actualizado correctamente')
+  }
+  static checkUserPassword = async (req: Request, res: Response) => {
+    const { password } = req.body
+    const { id } = req.user
+    const user = await User.findByPk(id)
+    const isPasswordCorrect = await checkPassword(password, user.password)
+    if (!isPasswordCorrect) {
+      const error = new Error('La contraseña es incorrecta')
+      res.status(401).json({ error: error.message })
+      return
+    }
+    res.json('La contraseña es correcta')
   }
 }
