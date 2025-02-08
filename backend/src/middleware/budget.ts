@@ -66,3 +66,13 @@ export const validateBudgetInput = async (
   }
   next()
 }
+
+export function hasAccess(req: Request, res: Response, next: NextFunction) {
+  if (req.user.id !== req.budget.userId) {
+    res
+      .status(401)
+      .json({ error: 'No tienes permiso para acceder a este recurso' })
+    return
+  }
+  next()
+}

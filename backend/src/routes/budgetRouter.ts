@@ -5,6 +5,7 @@ import {
   validateBudgetInput,
   validateBudgetById,
   validateBudgetExists,
+  hasAccess,
 } from '../middleware/budget'
 import { ExpenseController } from '../controllers/ExpenseControlle'
 import {
@@ -20,6 +21,7 @@ router.use(authenticate)
 
 router.param('budgetId', validateBudgetById)
 router.param('budgetId', validateBudgetExists)
+router.param('budgetId', hasAccess)
 
 router.param('expenseId', validateExpensetById)
 router.param('expenseId', validateExpenseExists)
