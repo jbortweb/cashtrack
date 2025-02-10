@@ -4,7 +4,8 @@ import Expense from '../models/Expense'
 export class ExpenseController {
   static create = async (req: Request, res: Response) => {
     try {
-      const expense = new Expense(req.body)
+      const expense = await Expense.create(req.body)
+
       expense.budgetId = req.budget.id
       await expense.save()
       res.status(201).json('Gasto creado correctamente')

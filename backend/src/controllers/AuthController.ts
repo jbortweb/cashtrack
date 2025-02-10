@@ -13,11 +13,11 @@ export class AuthController {
     const userExists = await User.findOne({ where: { email } })
     if (userExists) {
       const error = new Error('El email ya está en uso')
-      res.status(400).json({ error: error.message })
+      res.status(409).json({ error: error.message })
       return
     }
     try {
-      const user = new User(req.body)
+      const user = await User.create(req.body)
       user.password = await hashPassword(password)
       user.token = generateToken()
       await user.save()
@@ -60,7 +60,7 @@ export class AuthController {
     //Revisar si el usuario existe
     const user = await User.findOne({ where: { email } })
     if (!user) {
-      res.status(404).json({ error: 'Usuario  no encontrado' })
+      res.status(404).json({ error: 'Usuario no encontrado' })
       return
     }
     //Revisar si el usaurio está confirmado
