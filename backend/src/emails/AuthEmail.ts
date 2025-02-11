@@ -18,7 +18,7 @@ export class AuthEmail {
         <a href="#"><b>${user.token}</b></a>
       `,
     })
-    console.log('Mensaje enviado', email.messageId)
+    /* console.log('Mensaje enviado', email.messageId) */
   }
 
   static resetPasswordEmail = async (user: EmailType) => {
@@ -32,6 +32,6 @@ export class AuthEmail {
         <a href="#"><b>${user.token}</b></a>
       `,
     })
-    console.log('Mensaje enviado', email.messageId)
+    /* console.log('Mensaje enviado', email.messageId) */
   }
 }

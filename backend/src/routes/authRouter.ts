@@ -26,7 +26,7 @@ router.post(
     .notEmpty()
     .withMessage('Token es obligatorio')
     .isLength({ min: 6, max: 6 })
-    .withMessage('Token debe tener 6 caracteres'),
+    .withMessage('Token no válido'),
   handleInputErrors,
   AuthController.confirmeAccount
 )
@@ -52,7 +52,7 @@ router.post(
     .notEmpty()
     .withMessage('Token es obligatorio')
     .isLength({ min: 6, max: 6 })
-    .withMessage('Token debe tener 6 caracteres'),
+    .withMessage('Token no válido'),
   handleInputErrors,
   AuthController.validateToken
 )

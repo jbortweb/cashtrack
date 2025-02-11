@@ -19,14 +19,20 @@ export class AuthController {
     try {
       const user = await User.create(req.body)
       user.password = await hashPassword(password)
-      user.token = generateToken()
+      const token = generateToken()
+      user.token = token
+
+      if (process.env.NODE_ENV !== 'production') {
+        globalThis.cashTrackrConfirmationToken = token
+      }
+
       await user.save()
       await AuthEmail.sendConfirmationEmail({
         name: user.name,
         email: user.email,
         token: user.token,
       })
-      res.json('Cuenta creada correctamente')
+      res.status(201).json('Cuenta creada correctamente')
     } catch (error) {
       res.status(500).json({ error: 'Hubo un error al crear la cuenta' })
     }
@@ -38,7 +44,7 @@ export class AuthController {
 
     const tokenExists = await User.findOne({ where: { token } })
     if (!tokenExists) {
-      const error = new Error('Token inválido')
+      const error = new Error('Token no válido')
       res.status(401).json({ error: error.message })
       return
     }
@@ -47,7 +53,7 @@ export class AuthController {
       tokenExists.confirmed = true
       tokenExists.token = ''
       await tokenExists.save()
-      res.json('Cuenta confirmada correctamente')
+      res.status(200).json('Cuenta confirmada correctamente')
     } catch (error) {
       res.status(500).json({ error: 'Hubo un error al confirmar la cuenta' })
     }
@@ -116,7 +122,7 @@ export class AuthController {
       res.status(404).json({ error: error.message })
       return
     }
-    res.json('Token válido')
+    res.status(200).json('Token válido')
   }
 
   //ACTUALIZAR CONTRASEÑA
@@ -137,7 +143,7 @@ export class AuthController {
 
     await user.save()
 
-    res.json('El password se ha actualizado correctamente')
+    res.status(200).json('El password se ha actualizado correctamente')
   }
 
   static user = async (req: Request, res: Response) => {
@@ -160,7 +166,7 @@ export class AuthController {
 
     user.password = await hashPassword(password)
     await user.save()
-    res.json('La contraseña se ha actualizado correctamente')
+    res.status(200).json('La contraseña se ha actualizado correctamente')
   }
   static checkUserPassword = async (req: Request, res: Response) => {
     const { password } = req.body
@@ -172,6 +178,6 @@ export class AuthController {
       res.status(401).json({ error: error.message })
       return
     }
-    res.json('La contraseña es correcta')
+    res.status(200).json('La contraseña es correcta')
   }
 }

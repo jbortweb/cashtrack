@@ -9,7 +9,7 @@ export async function connectDB() {
   try {
     await db.authenticate()
     db.sync({ alter: true })
-    console.log(colors.blue.bold('Conexión exitosa a la BD'))
+    /*  console.log(colors.blue.bold('Conexión exitosa a la BD')) */
   } catch (error) {
     console.log(colors.red.bold('Falló la conexión a la BD'), error)
   }
