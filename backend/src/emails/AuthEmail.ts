@@ -15,7 +15,7 @@ export class AuthEmail {
       html: `
         <h1>Hola ${user.name}</h1>
         <p>Gracias por registrarte en CashTrackr. Haz click en el siguiente enlace para confirmar tu email:</p>
-        <a href="#"><b>${user.token}</b></a>
+        <a href=${process.env.FRONTEND_URL}/auth/confirm-account><b>${user.token}</b></a>
       `,
     })
     /* console.log('Mensaje enviado', email.messageId) */
@@ -29,7 +29,7 @@ export class AuthEmail {
       html: `
         <h1>Hola ${user.name}</h1>
         <p>Haz click en el siguiente enlace para recuperar tu contraseña:</p>
-        <a href="#"><b>${user.token}</b></a>
+        <a href=${process.env.FRONTEND_URL}/auth/new-password><b>${user.token}</b></a>
       `,
     })
     /* console.log('Mensaje enviado', email.messageId) */

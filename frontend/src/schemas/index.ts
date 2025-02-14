@@ -16,3 +16,8 @@ export const RegisterSchema = z
     message: 'Las contraseñas no coinciden',
     path: ['password_confirmation'],
   })
+
+export const successSchema = z.string()
+export const ErrorResponseSchema = z.object({
+  error: z.string(),
+})
