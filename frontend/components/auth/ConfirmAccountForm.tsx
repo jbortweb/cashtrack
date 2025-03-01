@@ -1,16 +1,31 @@
 'use client'
+import { confirmAccount } from '@/actions/confirm-account-action'
 import { PinInput, PinInputField } from '@chakra-ui/pin-input'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useFormState } from 'react-dom'
 
 const ConfirmAccountForm = () => {
+  const [isComplete, setIsComplete] = useState(false)
   const [token, setToken] = useState('')
+
+  const confirmAccountWithToken = confirmAccount.bind(null, token)
+  const [state, dispatch] = useFormState(confirmAccountWithToken, {
+    errors: [],
+    success: '',
+  })
+
+  useEffect(() => {
+    if (isComplete) {
+      dispatch()
+    }
+  }, [isComplete])
 
   const handleChange = (token: string) => {
     setToken(token)
   }
 
-  const handleComplete = (token: string) => {
-    console.log('Token:', token)
+  const handleComplete = () => {
+    setIsComplete(true)
   }
 
   return (
