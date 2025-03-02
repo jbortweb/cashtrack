@@ -14,11 +14,14 @@
     "@chakra-ui/system": "^2.6.2",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@headlessui/react": "^2.2.0",
+    "@heroicons/react": "^2.2.0",
     "framer-motion": "^12.4.2",
     "next": "14.2.24",
     "react": "^18",
     "react-dom": "^18",
     "react-toastify": "^11.0.5",
+    "server-only": "^0.0.1",
     "zod": "^3.24.2"
   },
   "devDependencies": {
