@@ -55,7 +55,7 @@ const ConfirmAccountForm = () => {
         onComplete={handleComplete}
       >
         <PinInputField
-          className="border border-gray-300 rounded-lg h-10 shadow-lg w-10 text-center  placeholder-white placeholder-white"
+          className="border border-gray-300 rounded-lg h-10 shadow-lg w-10 text-center  placeholder-white"
           type="text"
         />
         <PinInputField
